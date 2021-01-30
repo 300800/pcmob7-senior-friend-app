@@ -18,7 +18,7 @@ export default function App() {
       name: "Grace",
       number: "97661010",
       imageURL:
-        "https://static01.nyt.com/images/2017/07/27/us/27techfix/27techfix-videoSixteenByNineJumbo1600-v2.jpg",
+        "https://www.clipartkey.com/mpngs/m/156-1568007_senior-services-icon-family-and-friends-icon.png",
     },
     {
       name: "Zara",
@@ -30,18 +30,17 @@ export default function App() {
       name: "Police",
       number: "990",
       imageURL:
-        "https://www.mha.gov.sg/images/default-source/hometeamnews/spf1.jpg?sfvrsn=61db8001_0",
+        "https://cdn1.vectorstock.com/i/1000x1000/94/60/policeman-in-uniform-vector-4409460.jpg",
     },
   ];
 
   const renderImage = numbers.map(({ name, number, imageURL }) => {
     return (
-      <TouchableOpacity onPress={() => Linking.openURL(`tel:${number}`)}>
+      <TouchableOpacity onPress={() => Linking.openURL(`tel: ${number}`)}>
+        <Text style={{ fontSize: 20, color: "blue" }}>{name}</Text>
         <Image
           style={{ width: 100, height: 100, marginBottom: 15 }}
-          source={{
-            uri: `${imageURL}`,
-          }}
+          source={{ uri: `${imageURL}` }}
         />
       </TouchableOpacity>
     );
@@ -49,7 +48,9 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text>SENIOR FRIEND APP</Text>
+      <Text style={{ fontSize: 24, padding: 30, color: "red" }}>
+        SENIOR FRIEND APP
+      </Text>
       <StatusBar style="auto" />
       {renderImage}
     </View>

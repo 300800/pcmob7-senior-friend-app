@@ -1,8 +1,10 @@
+import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
+  TextInput,
   View,
   Image,
   TouchableOpacity,
@@ -11,8 +13,12 @@ import {
   Platform,
   Button,
 } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+//import { TextInput } from "react-native-gesture-handler";
 
 export default function App() {
+  const [textInput, setTextInput] = useState();
+  const [number, setNumber] = useState();
   const numbers = [
     {
       name: "Grace",
@@ -56,6 +62,24 @@ export default function App() {
       </Text>
       <StatusBar style="auto" />
       {renderImage}
+      <TextInput
+        style={{ height: 20, borderColor: "blue", borderWith: 2 }}
+        placeholder="Type name" // Initial display on text input box
+        value={textInput}
+        onChangetext={(input) => setTextInput(input)} //This will set the text input
+      ></TextInput>
+      <TextInput
+        style={{ height: 20, borderColor: "red", borderWith: 2 }}
+        placeholder="Type number" // Initial display on text input box
+        value={number}
+        onChangetext={(input) => setNumber(input)} //This will set the text input
+      ></TextInput>
+      <TouchableOpacity
+        Key={number}
+        onPress={() => Linking.openURL(`tel: ${number}`)}
+      >
+        <Text style={{ fontSize: 24, color: "blue" }}>{number}</Text>
+      </TouchableOpacity>
     </View>
   );
 }

@@ -41,7 +41,7 @@ export default function App() {
     },
     {
       name: "SOS",
-      number: "1800",
+      number: "18002214444",
       imageURL:
         "https://uploads-ssl.webflow.com/5a4c78412b69220001d82c7d/5a4c78412b69220001d82d29_3.svg",
     },
@@ -62,8 +62,11 @@ export default function App() {
     );
   });
 
-  function buttonPressed() {
+  function button1() {
     console.log("Key in name");
+  }
+  function button2() {
+    console.log("Upload image");
   }
 
   return (
@@ -85,7 +88,8 @@ export default function App() {
         value={number}
         onChangetext={(input) => setNumber(input)} //This will set the text input
       ></TextInput>
-      <Button title="Add!" onPress={buttonPressed}></Button>
+      <Button title="Add!" onPress={button1}></Button>
+      <Button title="Upload image" onPress={button2}></Button>
       <TouchableOpacity
         Key={number}
         onPress={() => Linking.openURL(`tel: ${number}`)}

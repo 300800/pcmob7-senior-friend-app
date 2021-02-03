@@ -21,22 +21,29 @@ export default function App() {
   const [number, setNumber] = useState();
   const numbers = [
     {
-      name: "Grace",
+      name: "Enter Name",
       number: "90080000",
       imageURL:
         "https://www.clipartkey.com/mpngs/m/156-1568007_senior-services-icon-family-and-friends-icon.png",
     },
     {
-      name: "Zara",
+      name: "Enter name",
       number: "96800000",
       imageURL:
         "https://static01.nyt.com/images/2017/07/27/us/27techfix/27techfix-videoSixteenByNineJumbo1600-v2.jpg",
     },
+
     {
       name: "Police",
       number: "97830000",
       imageURL:
         "https://cdn1.vectorstock.com/i/1000x1000/94/60/policeman-in-uniform-vector-4409460.jpg",
+    },
+    {
+      name: "SOS",
+      number: "1800",
+      imageURL:
+        "https://uploads-ssl.webflow.com/5a4c78412b69220001d82c7d/5a4c78412b69220001d82d29_3.svg",
     },
   ];
 
@@ -55,6 +62,10 @@ export default function App() {
     );
   });
 
+  function buttonPressed() {
+    console.log("Key in name");
+  }
+
   return (
     <View style={styles.container}>
       <Text style={{ fontSize: 24, padding: 30, color: "red" }}>
@@ -64,16 +75,17 @@ export default function App() {
       {renderImage}
       <TextInput
         style={{ height: 20, borderColor: "blue", borderWith: 2 }}
-        placeholder="Type name" // Initial display on text input box
+        placeholder="Add name" // Initial display on text input box
         value={textInput}
         onChangetext={(input) => setTextInput(input)} //This will set the text input
       ></TextInput>
       <TextInput
         style={{ height: 20, borderColor: "red", borderWith: 2 }}
-        placeholder="Type number" // Initial display on text input box
+        placeholder="Add number" // Initial display on text input box
         value={number}
         onChangetext={(input) => setNumber(input)} //This will set the text input
       ></TextInput>
+      <Button title="Add!" onPress={buttonPressed}></Button>
       <TouchableOpacity
         Key={number}
         onPress={() => Linking.openURL(`tel: ${number}`)}

@@ -19,6 +19,7 @@ import { NavigationContainer } from "@react-navigation/native";
 export default function App() {
   const [textInput, setTextInput] = useState();
   const [number, setNumber] = useState();
+  const [imageURL, setImageURL] = useState();
   const numbers = [
     {
       name: "Enter Name",
@@ -88,12 +89,18 @@ export default function App() {
         value={number}
         onChangetext={(input) => setNumber(input)} //This will set the text input
       ></TextInput>
+      <TextInput
+        style={{ height: 20, borderColor: "red", borderWith: 2 }}
+        placeholder="URL for image" // Initial display on text input box
+        value={imageURL}
+        onChangetext={(input) => setImageURL(input)} //This will set the text input
+      ></TextInput>
       <Button title="Add!" onPress={button1}></Button>
       <Button title="Upload image" onPress={button2}></Button>
-      <TouchableOpacity
+      <TouchableOpacity style={[styles.button, styles.submitButton]}>
+        <Text style={styles.buttonText}>Submit</Text>
         Key={number}
-        onPress={() => Linking.openURL(`tel: ${number}`)}
-      >
+        onPress={() => Linking.openURL(`tel: ${number}`)}>
         <Text style={{ fontSize: 24, color: "blue" }}>{number}</Text>
       </TouchableOpacity>
     </View>

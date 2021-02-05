@@ -89,19 +89,12 @@ export default function App() {
         value={number}
         onChangetext={(input) => setNumber(input)} //This will set the text input
       ></TextInput>
-      <TextInput
-        style={{ height: 20, borderColor: "red", borderWith: 2 }}
-        placeholder="URL for image" // Initial display on text input box
-        value={imageURL}
-        onChangetext={(input) => setImageURL(input)} //This will set the text input
-      ></TextInput>
-      <Button title="Add!" onPress={button1}></Button>
-      <Button title="Upload image" onPress={button2}></Button>
-      <TouchableOpacity style={[styles.button, styles.submitButton]}>
-        <Text style={styles.buttonText}>Submit</Text>
-        Key={number}
-        onPress={() => Linking.openURL(`tel: ${number}`)}>
-        <Text style={{ fontSize: 24, color: "blue" }}>{number}</Text>
+
+      <TouchableOpacity style={styles.submitButton} onpress={button1}>
+        <Text style={styles.buttonText}>Add!</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.submitButton} onpress={button2}>
+        <Text style={styles.buttonText}>Upload image</Text>
       </TouchableOpacity>
     </View>
   );
@@ -113,5 +106,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+  },
+  submitButton: {
+    backgroundColor: "#00bfff",
+    paddingBottom: 5,
+  },
+  buttonText: {
+    color: "white",
   },
 });

@@ -21,7 +21,8 @@ export default function App() {
   const [textInput, setTextInput] = useState();
   const [number, setNumber] = useState();
   const [imageURL, setImageURL] = useState();
-  const numbers = [
+
+  const [numbers, setNumbers] = useState([
     {
       name: "Enter Name",
       number: "90080000",
@@ -34,7 +35,7 @@ export default function App() {
       imageURL:
         "https://static01.nyt.com/images/2017/07/27/us/27techfix/27techfix-videoSixteenByNineJumbo1600-v2.jpg",
     },
-  ];
+  ]);
 
   const emergencyNumbers = [
     {
@@ -79,10 +80,21 @@ export default function App() {
       );
     });
 
-  function button1() {
+  function addContact() {
     console.log("Key in name");
+    console.log(number);
+    const contact = {
+      name: "new contact", // change "new contact" to the name indicated by the user
+      number: number,
+      // allow the user to select an image from the gallery
+      imageURL:
+        "https://cdn1.vectorstock.com/i/1000x1000/94/60/policeman-in-uniform-vector-4409460.jpg",
+    };
+    console.log(numbers);
+    setNumbers([...numbers, contact]);
+    console.log(numbers);
   }
-  function button2() {
+  function addImage() {
     console.log("Upload image");
   }
 
@@ -100,24 +112,24 @@ export default function App() {
       </View>
 
       <TextInput
-        style={{ height: 20, borderColor: "red", borderWith: 2 }}
+        style={{ height: 20, borderColor: "red", borderWidth: 2 }}
         placeholder="Add name" // Initial display on text input box
         style={{ color: "blue", fontWeight: "bold" }}
         value={textInput}
-        onChangetext={(input) => setTextInput(input)} //This will set the text input
+        onChangeText={(input) => setTextInput(input)} //This will set the text input
       ></TextInput>
       <TextInput
-        style={{ height: 20, borderColor: "red", borderWith: 2 }}
+        style={{ height: 20, borderColor: "red", borderWidth: 2 }}
         placeholder="Add number" // Initial display on text input box
         style={{ fontWeight: "bold", color: "blue" }}
         value={number}
-        onChangetext={(input) => setNumber(input)} //This will set the text input
+        onChangeText={(input) => setNumber(input)} //This will set the text input
       ></TextInput>
 
-      <TouchableOpacity style={styles.submitButtonAdd} onpress={button1}>
+      <TouchableOpacity style={styles.submitButtonAdd} onPress={addContact}>
         <Text style={styles.buttonText}>Add!</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.submitButtonUpload} onpress={button2}>
+      <TouchableOpacity style={styles.submitButtonUpload} onPress={addImage}>
         <Text style={styles.buttonText}>Upload image</Text>
       </TouchableOpacity>
     </View>
@@ -130,7 +142,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    text: "red",
   },
   submitButtonAdd: {
     backgroundColor: "#00bfff",
@@ -152,6 +163,5 @@ const styles = StyleSheet.create({
     padding: 10,
     marginLeft: 20,
     marginRight: 20,
-    text: "red",
   },
 });

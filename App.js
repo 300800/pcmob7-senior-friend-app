@@ -84,11 +84,11 @@ export default function App() {
     console.log("Key in name");
     console.log(number);
     const contact = {
-      name: "new contact", // change "new contact" to the name indicated by the user
+      name: "new contact", // change "new contact" to the name indicated by the use
       number: number,
       // allow the user to select an image from the gallery
       imageURL:
-        "https://cdn1.vectorstock.com/i/1000x1000/94/60/policeman-in-uniform-vector-4409460.jpg",
+        "https://p.kindpng.com/picc/s/720-7206165_heart-frame-background-png-frame-love-photo-background.png",
     };
     console.log(numbers);
     setNumbers([...numbers, contact]);

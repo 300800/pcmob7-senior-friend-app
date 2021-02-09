@@ -17,6 +17,7 @@ import { NavigationContainer } from "@react-navigation/native";
 //import { TextInput } from "react-native-gesture-handler";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as ImagePicker from expo-image-picker;
 
 export default function App() {
   const [name, setName] = useState();
@@ -103,7 +104,7 @@ export default function App() {
   // this function adds contacts into the local storage
   function addContact() {
     const contact = {
-      name: name, // change "new contact" to the name indicated by the use
+      name: name, // change "new contact" to the name indicated by the user
       number: number,
       // allow the user to select an image from the gallery
       imageURL:
@@ -131,7 +132,8 @@ export default function App() {
         SENIOR FRIEND APP
       </Text>
       <StatusBar style="auto" />
-      {renderImage(contacts)}
+
+      <View style={styles.family}>{renderImage(contacts)}</View>
       <View style={styles.emergencyNumbers}>
         {renderImage(emergencyNumbers)}
       </View>
@@ -139,7 +141,7 @@ export default function App() {
       <TextInput
         style={{ height: 20, borderColor: "red", borderWidth: 2 }}
         placeholder="Add name" // Initial display on text input box
-        style={{ color: "blue", fontWeight: "bold" }}
+        style={{ color: "black", fontWeight: "bold" }}
         value={name}
         onChangeText={(input) => setName(input)} //This will set the text input
       ></TextInput>
@@ -185,8 +187,14 @@ const styles = StyleSheet.create({
   emergencyNumbers: {
     flexDirection: "row",
     justifyContent: "space-between",
-    padding: 10,
     marginLeft: 20,
     marginRight: 20,
+  },
+  family: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginLeft: 20,
+    marginRight: 20,
+    padding: 10,
   },
 });

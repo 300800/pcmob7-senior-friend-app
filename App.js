@@ -1,6 +1,6 @@
 import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -16,27 +16,46 @@ import {
 import { NavigationContainer } from "@react-navigation/native";
 //import { TextInput } from "react-native-gesture-handler";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import AsyncStorage from "@react-native-async-storageasync-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App() {
-  const [textInput, setTextInput] = useState();
+  const [name, setName] = useState();
   const [number, setNumber] = useState();
   const [imageURL, setImageURL] = useState();
 
-  const [numbers, setNumbers] = useState([
-    {
-      name: "Enter Name",
-      number: "90080000",
-      imageURL:
-        "https://www.clipartkey.com/mpngs/m/156-1568007_senior-services-icon-family-and-friends-icon.png",
-    },
-    {
-      name: "Enter name",
-      number: "96800000",
-      imageURL:
-        "https://static01.nyt.com/images/2017/07/27/us/27techfix/27techfix-videoSixteenByNineJumbo1600-v2.jpg",
-    },
-  ]);
+  // const [numbers, setNumbers] = useState([
+  //   {
+  //     name: "Enter Name",
+  //     number: "90080000",
+  //     imageURL:
+  //       "https://www.clipartkey.com/mpngs/m/156-1568007_senior-services-icon-family-and-friends-icon.png",
+  //   },
+  //   {
+  //     name: "Enter name",
+  //     number: "96800000",
+  //     imageURL:
+  //       "https://static01.nyt.com/images/2017/07/27/us/27techfix/27techfix-videoSixteenByNineJumbo1600-v2.jpg",
+  //   },
+  // ]);
+
+  const [contacts, setContacts] = useState([]);
+
+  // this function loads the contacts stored in the local storage
+  async function loadContacts() {
+    const contactsString = await AsyncStorage.getItem("contacts"); // 'contacts' here refer to the storage key
+    if (contactsString) {
+      console.log("these are the contacts");
+      console.log(contactsString);
+
+      const storedContacts = JSON.parse(contactsString); // convert the contactsString from a string back to an object
+      setContacts(storedContacts);
+    }
+  }
+
+  // useeffect hook: to get the contacts stored in the phone, and assign them to the'numbers' variable
+  useEffect(() => {
+    loadContacts();
+  }, []);
 
   const emergencyNumbers = [
     {
@@ -59,7 +78,7 @@ export default function App() {
     },
     {
       name: "Fire Engine",
-      number: "995",
+      number: "998",
       imageURL:
         "https://upload.wikimedia.org/wikipedia/commons/7/7d/R%C3%B6d_brandbil_Scania_P360_%C3%A5rsmodell_2012_-_6211.jpg",
     },
@@ -81,19 +100,24 @@ export default function App() {
       );
     });
 
+  // this function adds contacts into the local storage
   function addContact() {
-    console.log("Key in name");
-    console.log(number);
     const contact = {
-      name: "new contact", // change "new contact" to the name indicated by the use
+      name: name, // change "new contact" to the name indicated by the use
       number: number,
       // allow the user to select an image from the gallery
       imageURL:
         "https://p.kindpng.com/picc/s/720-7206165_heart-frame-background-png-frame-love-photo-background.png",
     };
-    console.log(numbers);
-    setNumbers([...numbers, contact]);
-    console.log(numbers);
+
+    // convert the numbers object into a string
+    const numberString = JSON.stringify([...contacts, contact]); //;
+
+    // save the contacts in localstorage
+    AsyncStorage.setItem("contacts", numberString); // storage key would be 'contacts'
+
+    // add the new contact in the the 'contacts' variable
+    setContacts([...contacts, contact]);
   }
   function addImage() {
     console.log("Upload image");
@@ -107,7 +131,7 @@ export default function App() {
         SENIOR FRIEND APP
       </Text>
       <StatusBar style="auto" />
-      {renderImage(numbers)}
+      {renderImage(contacts)}
       <View style={styles.emergencyNumbers}>
         {renderImage(emergencyNumbers)}
       </View>
@@ -116,8 +140,8 @@ export default function App() {
         style={{ height: 20, borderColor: "red", borderWidth: 2 }}
         placeholder="Add name" // Initial display on text input box
         style={{ color: "blue", fontWeight: "bold" }}
-        value={textInput}
-        onChangeText={(input) => setTextInput(input)} //This will set the text input
+        value={name}
+        onChangeText={(input) => setName(input)} //This will set the text input
       ></TextInput>
       <TextInput
         style={{ height: 20, borderColor: "red", borderWidth: 2 }}

@@ -16,6 +16,7 @@ import {
 import { NavigationContainer } from "@react-navigation/native";
 //import { TextInput } from "react-native-gesture-handler";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import AsyncStorage from "@react-native-async-storageasync-storage";
 
 export default function App() {
   const [textInput, setTextInput] = useState();

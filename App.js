@@ -17,12 +17,13 @@ import { NavigationContainer } from "@react-navigation/native";
 //import { TextInput } from "react-native-gesture-handler";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as ImagePicker from expo-image-picker;
+import * as ImagePicker from "expo-image-picker";
 
 export default function App() {
   const [name, setName] = useState();
   const [number, setNumber] = useState();
-  const [imageURL, setImageURL] = useState();
+  const [imageURL, setImage] = useState();
+  const [deleteMode, setDeleteMode] = useState(false);
 
   // const [numbers, setNumbers] = useState([
   //   {
@@ -90,7 +91,12 @@ export default function App() {
       return (
         <TouchableOpacity
           key={number}
-          onPress={() => Linking.openURL(`tel: ${number}`)}
+          onPress={
+            deleteMode
+              ? () => deleteContact(number)
+              : () => Linking.openURL(`tel: ${number}`)
+          }
+          // Ternary operator: condition... ? func1 : func2
         >
           <Text style={{ fontSize: 20, color: "blue" }}>{name}</Text>
           <Image
@@ -107,8 +113,7 @@ export default function App() {
       name: name, // change "new contact" to the name indicated by the user
       number: number,
       // allow the user to select an image from the gallery
-      imageURL:
-        "https://p.kindpng.com/picc/s/720-7206165_heart-frame-background-png-frame-love-photo-background.png",
+      imageURL: imageURL,
     };
 
     // convert the numbers object into a string
@@ -119,6 +124,15 @@ export default function App() {
 
     // add the new contact in the the 'contacts' variable
     setContacts([...contacts, contact]);
+  }
+  // This deletes an individual profile
+  function deleteContact(id) {
+    console.log("Deleting " + id);
+    // To delete the item, we filter out the item not wanted
+    setContacts(contacts.filter((item) => item.number !== id));
+  }
+  function toggleDeleteMode() {
+    setDeleteMode(!deleteMode);
   }
   function addImage() {
     console.log("Upload image");
@@ -153,8 +167,22 @@ export default function App() {
         onChangeText={(input) => setNumber(input)} //This will set the text input
       ></TextInput>
 
+      <TextInput
+        style={{ height: 20, bordercolor: "red", borderWidth: 2 }}
+        placeholder="Add ImageURL"
+        style={{ color: "black", fontWeight: "bold" }}
+        value={imageURL}
+        onChangeText={(imageURL) => setImage(imageURL)}
+      ></TextInput>
+
       <TouchableOpacity style={styles.submitButtonAdd} onPress={addContact}>
         <Text style={styles.buttonText}>Add!</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.submitButtonDelete}
+        onPress={toggleDeleteMode}
+      >
+        <Text style={styles.buttonText}>Delete</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.submitButtonUpload} onPress={addImage}>
         <Text style={styles.buttonText}>Upload image</Text>
@@ -171,8 +199,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   submitButtonAdd: {
+    flexDirection: "row",
     backgroundColor: "#00bfff",
     marginTop: 10,
+    marginBottom: 10,
+    padding: 10,
+  },
+  submitButtonDelete: {
+    flexDirection: "row",
+    backgroundColor: "#00bfff",
+    marginTop: 5,
     marginBottom: 10,
     padding: 10,
   },
@@ -193,6 +229,7 @@ const styles = StyleSheet.create({
   family: {
     flexDirection: "row",
     justifyContent: "space-between",
+    flexWrap: "wrap",
     marginLeft: 20,
     marginRight: 20,
     padding: 10,

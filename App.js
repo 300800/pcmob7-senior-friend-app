@@ -24,6 +24,7 @@ export default function App() {
   const [number, setNumber] = useState();
   const [imageURL, setImage] = useState();
   const [deleteMode, setDeleteMode] = useState(false);
+  const [editMode, setEditMode] = useState();
 
   // const [numbers, setNumbers] = useState([
   //   {
@@ -125,6 +126,9 @@ export default function App() {
     // add the new contact in the the 'contacts' variable
     setContacts([...contacts, contact]);
   }
+  function editContact() {
+    console.log("editContact");
+  }
   // This deletes an individual profile
   function deleteContact(id) {
     console.log("Deleting " + id);
@@ -133,6 +137,11 @@ export default function App() {
   }
   function toggleDeleteMode() {
     setDeleteMode(!deleteMode);
+    setEditMode(false);
+  }
+  function toggleEditMode() {
+    setEditMode(!editMode);
+    setDeleteMode(false);
   }
   function addImage() {
     console.log("Upload image");
@@ -179,10 +188,28 @@ export default function App() {
         <Text style={styles.buttonText}>Add!</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={styles.submitButtonDelete}
+        style={editMode ? styles.buttonActive : styles.buttonNotActive}
+        onPress={toggleEditMode}
+      >
+        <Text
+          style={
+            editMode ? styles.buttonActiveText : styles.buttonNotActiveText
+          }
+        >
+          Edit
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={deleteMode ? styles.buttonActive : styles.buttonNotActive}
         onPress={toggleDeleteMode}
       >
-        <Text style={styles.buttonText}>Delete</Text>
+        <Text
+          style={
+            deleteMode ? styles.buttonActiveText : styles.buttonNotActiveText
+          }
+        >
+          Delete
+        </Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.submitButtonUpload} onPress={addImage}>
         <Text style={styles.buttonText}>Upload image</Text>
@@ -202,6 +229,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "#00bfff",
     marginTop: 10,
+    marginBottom: 10,
+    padding: 10,
+  },
+  submitButtonEdit: {
+    flexDirection: "row",
+    backgroundColor: "#00bfff",
+    marginTop: 5,
     marginBottom: 10,
     padding: 10,
   },
@@ -233,5 +267,27 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginRight: 20,
     padding: 10,
+  },
+  buttonActive: {
+    flexDirection: "row",
+    backgroundColor: "red",
+    marginTop: 5,
+    marginBottom: 10,
+    padding: 10,
+  },
+  buttonNotActive: {
+    flexDirection: "row",
+    backgroundColor: "red",
+    marginTop: 5,
+    marginBottom: 5,
+    padding: 10,
+  },
+  buttonActiveText: {
+    backgroundColor: "red",
+    fontWeight: "bold",
+  },
+  buttonNotActiveText: {
+    backgroundColor: "red",
+    fontWeight: "bold",
   },
 });

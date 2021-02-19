@@ -25,6 +25,8 @@ export default function App() {
   const [imageURL, setImage] = useState();
   const [deleteMode, setDeleteMode] = useState(false);
   const [editMode, setEditMode] = useState();
+  const [checkMode, setCheckMode] = useState();
+  const [contactToEdit, setContactToEdit] = useState({});
 
   // const [numbers, setNumbers] = useState([
   //   {
@@ -95,6 +97,8 @@ export default function App() {
           onPress={
             deleteMode
               ? () => deleteContact(number)
+              : editMode
+              ? () => editContact(number)
               : () => Linking.openURL(`tel: ${number}`)
           }
           // Ternary operator: condition... ? func1 : func2
@@ -126,14 +130,35 @@ export default function App() {
     // add the new contact in the the 'contacts' variable
     setContacts([...contacts, contact]);
   }
-  function editContact() {
-    console.log("editContact");
+
+  function editContact(number) {
+    console.log(number);
+    const contact = contacts.find((item) => {
+      return item.number == number;
+    });
+    console.log(contact);
+
+    // Set the name number and image to the text inputs
+    setName(contact.name);
+    setNumber(contact.number);
+    setImage(contact.imageURL);
+
+    deleteContact(number);
   }
   // This deletes an individual profile
   function deleteContact(id) {
     console.log("Deleting " + id);
+
     // To delete the item, we filter out the item not wanted
     setContacts(contacts.filter((item) => item.number !== id));
+
+    // convert the numbers object into a string
+    const numberString = JSON.stringify(
+      contacts.filter((item) => item.number !== id)
+    ); //; stringy contacts
+
+    // save the contacts in localstorage
+    AsyncStorage.setItem("contacts", numberString); // storage key would be 'contacts'
   }
   function toggleDeleteMode() {
     setDeleteMode(!deleteMode);
@@ -143,8 +168,13 @@ export default function App() {
     setEditMode(!editMode);
     setDeleteMode(false);
   }
+
   function addImage() {
     console.log("Upload image");
+  }
+
+  function seeContacts() {
+    console.log(contacts);
   }
 
   return (
@@ -168,6 +198,7 @@ export default function App() {
         value={name}
         onChangeText={(input) => setName(input)} //This will set the text input
       ></TextInput>
+
       <TextInput
         style={{ height: 20, borderColor: "red", borderWidth: 2 }}
         placeholder="Add number" // Initial display on text input box
@@ -214,6 +245,8 @@ export default function App() {
       <TouchableOpacity style={styles.submitButtonUpload} onPress={addImage}>
         <Text style={styles.buttonText}>Upload image</Text>
       </TouchableOpacity>
+
+      <Button onPress={seeContacts} title="seeContacts" />
     </View>
   );
 }
@@ -277,17 +310,17 @@ const styles = StyleSheet.create({
   },
   buttonNotActive: {
     flexDirection: "row",
-    backgroundColor: "red",
+    backgroundColor: "#00bfff",
     marginTop: 5,
     marginBottom: 5,
     padding: 10,
   },
   buttonActiveText: {
-    backgroundColor: "red",
+    color: "black",
     fontWeight: "bold",
   },
   buttonNotActiveText: {
-    backgroundColor: "red",
+    color: "red",
     fontWeight: "bold",
   },
 });

@@ -172,7 +172,34 @@ export default function App() {
   function addImage() {
     console.log("Upload image");
   }
+  // function to open Image selector
+  function openImageSelector() {
+    console.log("uploadImage");
+    const openImageSelector = async () => {
+      let image = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+      if (!image.cancelled) {
+        setImageUri(image.uri);
+      }
+    };
+  }
+  function openCamera() {
+    console.log("openCamera");
+    const openCamera = async () => {
+      let image = await ImagePicker.launchCameraAsync().catch((error) =>
+        console.log({ error })
+      );
 
+      if (!image.cancelled) {
+        //set the 'image' state to contain the image uri
+        setImageUri(image.uri);
+      }
+    };
+  }
   function seeContacts() {
     console.log(contacts);
   }
@@ -242,11 +269,25 @@ export default function App() {
           Delete
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.submitButtonUpload} onPress={addImage}>
-        <Text style={styles.buttonText}>Upload image</Text>
+      <TouchableOpacity
+        style={[styles.submitButtonUpload]}
+        onPress={() => {
+          openImageSelector();
+        }}
+      >
+        <Text style={styles.buttonText}>Image from Gallery</Text>
       </TouchableOpacity>
 
-      <Button onPress={seeContacts} title="seeContacts" />
+      <TouchableOpacity
+        style={[styles.cameraButton]}
+        onPress={() => {
+          openCamera();
+        }}
+      >
+        <Text style={styles.cameraButtonText}>Camera</Text>
+      </TouchableOpacity>
+
+      <Button onPress={seeContacts} title="see Contacts" />
     </View>
   );
 }
@@ -278,14 +319,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 10,
     padding: 10,
-  },
-  submitButtonUpload: {
-    backgroundColor: "#00bfff",
-    padding: 10,
-  },
-  buttonText: {
-    color: "red",
-    fontWeight: "bold",
   },
   emergencyNumbers: {
     flexDirection: "row",
@@ -320,6 +353,25 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   buttonNotActiveText: {
+    color: "red",
+    fontWeight: "bold",
+  },
+  submitButtonUpload: {
+    backgroundColor: "#00bfff",
+    padding: 10,
+  },
+  buttonText: {
+    color: "red",
+    fontWeight: "bold",
+  },
+  cameraButton: {
+    flexDirection: "row",
+    backgroundColor: "#00bfff",
+    marginTop: 5,
+    marginBottom: 5,
+    padding: 10,
+  },
+  cameraButtonText: {
     color: "red",
     fontWeight: "bold",
   },

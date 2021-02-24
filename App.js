@@ -27,6 +27,7 @@ export default function App() {
   const [deleteMode, setDeleteMode] = useState(false);
   const [editMode, setEditMode] = useState();
   const [contactIndex, setContactIndex] = useState();
+  const [saveEdit, setSaveEdit] = useState();
 
   // const [numbers, setNumbers] = useState([
   //   {
@@ -145,6 +146,10 @@ export default function App() {
       })
     );
 
+    function saveEdit() {
+      console.log(edit);
+    }
+
     const contact = contacts.find((item) => {
       return item.number == number;
     });
@@ -237,25 +242,52 @@ export default function App() {
         </View>
 
         <TextInput
-          style={{ height: 20, borderColor: "red", borderWidth: 2 }}
+          style={{
+            height: 30,
+            width: "20%",
+            borderColor: "#00bfff",
+            backgroundColor: "pink",
+            borderWidth: 3,
+            marginTop: 5,
+            marginBottom: 5,
+            color: "blue",
+            fontWeight: "bold",
+          }}
           placeholder="Add name" // Initial display on text input box
-          style={{ color: "black", fontWeight: "bold" }}
           value={name}
           onChangeText={(input) => setName(input)} //This will set the text input
         ></TextInput>
 
         <TextInput
-          style={{ height: 20, borderColor: "red", borderWidth: 2 }}
+          style={{
+            height: 30,
+            width: "20%",
+            borderColor: "#00bfff",
+            backgroundColor: "pink",
+            borderWidth: 3,
+            marginTop: 5,
+            marginBottom: 5,
+            color: "blue",
+            fontWeight: "bold",
+          }}
           placeholder="Add number" // Initial display on text input box
-          style={{ fontWeight: "bold", color: "blue" }}
           value={number}
           onChangeText={(input) => setNumber(input)} //This will set the text input
         ></TextInput>
 
         <TextInput
-          style={{ height: 20, bordercolor: "red", borderWidth: 2 }}
+          style={{
+            height: 30,
+            width: "50%",
+            borderColor: "#00bfff",
+            backgroundColor: "pink",
+            borderWidth: 3,
+            marginTop: 5,
+            marginBottom: 5,
+            color: "blue",
+            fontWeight: "bold",
+          }}
           placeholder="Add ImageURL"
-          style={{ color: "black", fontWeight: "bold" }}
           value={imageURL}
           onChangeText={(imageURL) => setImage(imageURL)}
         ></TextInput>
@@ -334,24 +366,17 @@ const styles = StyleSheet.create({
   //submitButtonEdit: {
   //   flexDirection: "row",
   //   backgroundColor: "#00bfff",
-  //   marginTop: 5,
-  //   marginBottom: 10,
-  //   padding: 10,
-  //   width: "20%",
   // },
   // submitButtonDelete: {
   //   flexDirection: "row",
   //   backgroundColor: "#00bfff",
-  //   marginTop: 5,
-  //   marginBottom: 10,
-  //   padding: 10,
-  //   width: "20%",
   // },
   emergencyNumbers: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginLeft: 20,
-    marginRight: 20,
+    marginLeft: 10,
+    marginRight: 10,
+    padding: 20,
   },
   family: {
     flexDirection: "row",

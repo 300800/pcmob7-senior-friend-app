@@ -12,6 +12,7 @@ import {
   Alert,
   Platform,
   Button,
+  ScrollView,
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 //import { TextInput } from "react-native-gesture-handler";
@@ -25,8 +26,7 @@ export default function App() {
   const [imageURL, setImage] = useState();
   const [deleteMode, setDeleteMode] = useState(false);
   const [editMode, setEditMode] = useState();
-  const [checkMode, setCheckMode] = useState();
-  const [contactToEdit, setContactToEdit] = useState({});
+  const [contactIndex, setContactIndex] = useState();
 
   // const [numbers, setNumbers] = useState([
   //   {
@@ -64,24 +64,28 @@ export default function App() {
 
   const emergencyNumbers = [
     {
+      key: 0,
       name: "Police",
       number: "97830000",
       imageURL:
         "https://cdn1.vectorstock.com/i/1000x1000/94/60/policeman-in-uniform-vector-4409460.jpg",
     },
     {
+      key: 1,
       name: "SOS",
       number: "18002214444",
       imageURL:
         "https://uploads-ssl.webflow.com/5a4c78412b69220001d82c7d/5a4c78412b69220001d82d29_3.svg",
     },
     {
+      key: 2,
       name: "Ambulance",
       number: "995",
       imageURL:
         "https://p1.hiclipart.com/preview/563/664/55/ambulance-cartoon-emergency-telephone-number-emergency-service-emergency-call-box-first-aid-health-certified-first-responder-vehicle-png-clipart.jpg",
     },
     {
+      key: 3,
       name: "Fire Engine",
       number: "998",
       imageURL:
@@ -115,6 +119,7 @@ export default function App() {
   // this function adds contacts into the local storage
   function addContact() {
     const contact = {
+      //todo: add in a key
       name: name, // change "new contact" to the name indicated by the user
       number: number,
       // allow the user to select an image from the gallery
@@ -133,17 +138,22 @@ export default function App() {
 
   function editContact(number) {
     console.log(number);
+
+    setContactIndex(
+      contacts.findIndex((item) => {
+        return item.number == number;
+      })
+    );
+
     const contact = contacts.find((item) => {
       return item.number == number;
     });
     console.log(contact);
 
-    // Set the name number and image to the text inputs
+    // Set the name, number and image to the text inputs
     setName(contact.name);
     setNumber(contact.number);
     setImage(contact.imageURL);
-
-    deleteContact(number);
   }
   // This deletes an individual profile
   function deleteContact(id) {
@@ -169,125 +179,139 @@ export default function App() {
     setDeleteMode(false);
   }
 
+  // old way to declare a function.  const is new way.
   function addImage() {
     console.log("Upload image");
   }
   // function to open Image selector
-  function openImageSelector() {
-    console.log("uploadImage");
-    const openImageSelector = async () => {
-      let image = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-      });
-      if (!image.cancelled) {
-        setImageUri(image.uri);
-      }
-    };
-  }
-  function openCamera() {
-    console.log("openCamera");
-    const openCamera = async () => {
-      let image = await ImagePicker.launchCameraAsync().catch((error) =>
-        console.log({ error })
-      );
+  // old way to declare a function: function openImageSelector() {
+  //console.log("uploadImage");
+  const openImageSelector = async () => {
+    let image = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    if (!image.cancelled) {
+      setImage(image.uri);
+    }
+  };
 
-      if (!image.cancelled) {
-        //set the 'image' state to contain the image uri
-        setImageUri(image.uri);
-      }
-    };
-  }
+  // function to open camera
+  // old way of declaing function openCamera()
+  //console.log("openCamera");
+  const openCamera = async () => {
+    let image = await ImagePicker.launchCameraAsync().catch((error) =>
+      console.log({ error })
+    );
+
+    if (!image.cancelled) {
+      //set the 'image' state to contain the image uri
+      setImage(image.uri);
+    }
+  };
+
   function seeContacts() {
     console.log(contacts);
   }
 
   return (
     <View style={styles.container}>
-      <Text
-        style={{ fontSize: 24, fontWeight: "bold", padding: 30, color: "red" }}
-      >
-        SENIOR FRIEND APP
-      </Text>
-      <StatusBar style="auto" />
-
-      <View style={styles.family}>{renderImage(contacts)}</View>
-      <View style={styles.emergencyNumbers}>
-        {renderImage(emergencyNumbers)}
-      </View>
-
-      <TextInput
-        style={{ height: 20, borderColor: "red", borderWidth: 2 }}
-        placeholder="Add name" // Initial display on text input box
-        style={{ color: "black", fontWeight: "bold" }}
-        value={name}
-        onChangeText={(input) => setName(input)} //This will set the text input
-      ></TextInput>
-
-      <TextInput
-        style={{ height: 20, borderColor: "red", borderWidth: 2 }}
-        placeholder="Add number" // Initial display on text input box
-        style={{ fontWeight: "bold", color: "blue" }}
-        value={number}
-        onChangeText={(input) => setNumber(input)} //This will set the text input
-      ></TextInput>
-
-      <TextInput
-        style={{ height: 20, bordercolor: "red", borderWidth: 2 }}
-        placeholder="Add ImageURL"
-        style={{ color: "black", fontWeight: "bold" }}
-        value={imageURL}
-        onChangeText={(imageURL) => setImage(imageURL)}
-      ></TextInput>
-
-      <TouchableOpacity style={styles.submitButtonAdd} onPress={addContact}>
-        <Text style={styles.buttonText}>Add!</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={editMode ? styles.buttonActive : styles.buttonNotActive}
-        onPress={toggleEditMode}
-      >
+      <ScrollView>
         <Text
-          style={
-            editMode ? styles.buttonActiveText : styles.buttonNotActiveText
-          }
+          style={{
+            fontSize: 24,
+            fontWeight: "bold",
+            padding: 30,
+            color: "red",
+          }}
         >
-          Edit
+          SENIOR FRIEND APP
         </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={deleteMode ? styles.buttonActive : styles.buttonNotActive}
-        onPress={toggleDeleteMode}
-      >
-        <Text
-          style={
-            deleteMode ? styles.buttonActiveText : styles.buttonNotActiveText
-          }
+        <StatusBar style="auto" />
+
+        <View style={styles.family}>{renderImage(contacts)}</View>
+        <View style={styles.emergencyNumbers}>
+          {renderImage(emergencyNumbers)}
+        </View>
+
+        <TextInput
+          style={{ height: 20, borderColor: "red", borderWidth: 2 }}
+          placeholder="Add name" // Initial display on text input box
+          style={{ color: "black", fontWeight: "bold" }}
+          value={name}
+          onChangeText={(input) => setName(input)} //This will set the text input
+        ></TextInput>
+
+        <TextInput
+          style={{ height: 20, borderColor: "red", borderWidth: 2 }}
+          placeholder="Add number" // Initial display on text input box
+          style={{ fontWeight: "bold", color: "blue" }}
+          value={number}
+          onChangeText={(input) => setNumber(input)} //This will set the text input
+        ></TextInput>
+
+        <TextInput
+          style={{ height: 20, bordercolor: "red", borderWidth: 2 }}
+          placeholder="Add ImageURL"
+          style={{ color: "black", fontWeight: "bold" }}
+          value={imageURL}
+          onChangeText={(imageURL) => setImage(imageURL)}
+        ></TextInput>
+
+        <TouchableOpacity
+          style={styles.submitButtonAdd}
+          onPress={editMode ? saveEdit : addContact}
         >
-          Delete
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[styles.submitButtonUpload]}
-        onPress={() => {
-          openImageSelector();
-        }}
-      >
-        <Text style={styles.buttonText}>Image from Gallery</Text>
-      </TouchableOpacity>
+          <Text style={styles.buttonText}>{editMode ? "Save" : "Add!"}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={editMode ? styles.buttonActive : styles.buttonNotActive}
+          onPress={toggleEditMode}
+        >
+          <Text
+            style={
+              editMode ? styles.buttonActiveText : styles.buttonNotActiveText
+            }
+          >
+            Edit
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={deleteMode ? styles.buttonActive : styles.buttonNotActive}
+          onPress={toggleDeleteMode}
+        >
+          <Text
+            style={
+              deleteMode ? styles.buttonActiveText : styles.buttonNotActiveText
+            }
+          >
+            Delete
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.submitButtonUpload]}
+          onPress={() => {
+            openImageSelector();
+          }}
+        >
+          <Text style={[styles.buttonText, styles.submitButtonEdit]}>
+            Image from Gallery
+          </Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        style={[styles.cameraButton]}
-        onPress={() => {
-          openCamera();
-        }}
-      >
-        <Text style={styles.cameraButtonText}>Camera</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.cameraButton]}
+          onPress={() => {
+            openCamera();
+          }}
+        >
+          <Text style={styles.buttonText}>Camera</Text>
+        </TouchableOpacity>
 
-      <Button onPress={seeContacts} title="see Contacts" />
+        <Button onPress={seeContacts} title="see Contacts" />
+      </ScrollView>
     </View>
   );
 }
@@ -305,21 +329,24 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     padding: 10,
+    width: "20%",
   },
-  submitButtonEdit: {
-    flexDirection: "row",
-    backgroundColor: "#00bfff",
-    marginTop: 5,
-    marginBottom: 10,
-    padding: 10,
-  },
-  submitButtonDelete: {
-    flexDirection: "row",
-    backgroundColor: "#00bfff",
-    marginTop: 5,
-    marginBottom: 10,
-    padding: 10,
-  },
+  //submitButtonEdit: {
+  //   flexDirection: "row",
+  //   backgroundColor: "#00bfff",
+  //   marginTop: 5,
+  //   marginBottom: 10,
+  //   padding: 10,
+  //   width: "20%",
+  // },
+  // submitButtonDelete: {
+  //   flexDirection: "row",
+  //   backgroundColor: "#00bfff",
+  //   marginTop: 5,
+  //   marginBottom: 10,
+  //   padding: 10,
+  //   width: "20%",
+  // },
   emergencyNumbers: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -340,6 +367,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 10,
     padding: 10,
+    width: "20%",
   },
   buttonNotActive: {
     flexDirection: "row",
@@ -347,6 +375,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 5,
     padding: 10,
+    width: "20%",
   },
   buttonActiveText: {
     color: "black",
@@ -359,6 +388,7 @@ const styles = StyleSheet.create({
   submitButtonUpload: {
     backgroundColor: "#00bfff",
     padding: 10,
+    width: "40%",
   },
   buttonText: {
     color: "red",
@@ -370,6 +400,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 5,
     padding: 10,
+    width: "20%",
   },
   cameraButtonText: {
     color: "red",

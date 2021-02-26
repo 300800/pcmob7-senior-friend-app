@@ -27,7 +27,6 @@ export default function App() {
   const [deleteMode, setDeleteMode] = useState(false);
   const [editMode, setEditMode] = useState();
   const [contactIndex, setContactIndex] = useState();
-  const [saveEdit, setSaveEdit] = useState();
 
   // const [numbers, setNumbers] = useState([
   //   {
@@ -98,6 +97,7 @@ export default function App() {
     array.map(({ name, number, imageURL }) => {
       return (
         <TouchableOpacity
+          style={{ paddingHorizontal: 3 }}
           key={number}
           onPress={
             deleteMode
@@ -146,10 +146,6 @@ export default function App() {
       })
     );
 
-    function saveEdit() {
-      console.log(edit);
-    }
-
     const contact = contacts.find((item) => {
       return item.number == number;
     });
@@ -160,6 +156,22 @@ export default function App() {
     setNumber(contact.number);
     setImage(contact.imageURL);
   }
+
+  function saveEdit() {
+    console.log("saving edit");
+    console.log(contacts);
+
+    contacts[contactIndex] = {
+      name: name,
+      number: number,
+      imageURL: imageURL,
+    };
+
+    setName("");
+    setNumber("");
+    setImage("");
+  }
+
   // This deletes an individual profile
   function deleteContact(id) {
     console.log("Deleting " + id);
@@ -242,51 +254,21 @@ export default function App() {
         </View>
 
         <TextInput
-          style={{
-            height: 30,
-            width: "20%",
-            borderColor: "#00bfff",
-            backgroundColor: "pink",
-            borderWidth: 3,
-            marginTop: 5,
-            marginBottom: 5,
-            color: "blue",
-            fontWeight: "bold",
-          }}
+          style={styles.inputText}
           placeholder="Add name" // Initial display on text input box
           value={name}
           onChangeText={(input) => setName(input)} //This will set the text input
         ></TextInput>
 
         <TextInput
-          style={{
-            height: 30,
-            width: "20%",
-            borderColor: "#00bfff",
-            backgroundColor: "pink",
-            borderWidth: 3,
-            marginTop: 5,
-            marginBottom: 5,
-            color: "blue",
-            fontWeight: "bold",
-          }}
+          style={styles.inputText}
           placeholder="Add number" // Initial display on text input box
           value={number}
           onChangeText={(input) => setNumber(input)} //This will set the text input
         ></TextInput>
 
         <TextInput
-          style={{
-            height: 30,
-            width: "50%",
-            borderColor: "#00bfff",
-            backgroundColor: "pink",
-            borderWidth: 3,
-            marginTop: 5,
-            marginBottom: 5,
-            color: "blue",
-            fontWeight: "bold",
-          }}
+          style={styles.inputTextURL}
           placeholder="Add ImageURL"
           value={imageURL}
           onChangeText={(imageURL) => setImage(imageURL)}
@@ -323,7 +305,7 @@ export default function App() {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.submitButtonUpload]}
+          style={[styles.imageButton]}
           onPress={() => {
             openImageSelector();
           }}
@@ -342,7 +324,7 @@ export default function App() {
           <Text style={styles.buttonText}>Camera</Text>
         </TouchableOpacity>
 
-        <Button onPress={seeContacts} title="see Contacts" />
+        <Button onPress={seeContacts} title="See Contacts" />
       </ScrollView>
     </View>
   );
@@ -354,6 +336,28 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+  },
+  inputText: {
+    height: 30,
+    width: "20%",
+    borderColor: "#00bfff",
+    backgroundColor: "pink",
+    borderWidth: 3,
+    marginTop: 5,
+    marginBottom: 5,
+    color: "blue",
+    fontWeight: "bold",
+  },
+  inputTextURL: {
+    height: 30,
+    width: "40%",
+    borderColor: "#00bfff",
+    backgroundColor: "pink",
+    borderWidth: 3,
+    marginTop: 5,
+    marginBottom: 5,
+    color: "blue",
+    fontWeight: "bold",
   },
   submitButtonAdd: {
     flexDirection: "row",
@@ -410,10 +414,10 @@ const styles = StyleSheet.create({
     color: "red",
     fontWeight: "bold",
   },
-  submitButtonUpload: {
+  imageButton: {
     backgroundColor: "#00bfff",
     padding: 10,
-    width: "40%",
+    width: "20%",
   },
   buttonText: {
     color: "red",
